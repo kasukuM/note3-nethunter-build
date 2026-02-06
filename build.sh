@@ -1,65 +1,41 @@
 #!/bin/bash
 
-# NetHunter kernel build script for Samsung Galaxy Note 3 (hltetcan)
-# This script includes support for Nexmon, Monitor Mode, Packet Injection, and HID Gadget.
+# NetHunter Kernel Build Script
 
-# Set variables
-KERNEL_SOURCE="/path/to/kernel/source"
-OUTPUT_DIR="/path/to/output/directory"
-NEXMON_PATH="/path/to/nexmon"
-CONFIG_FILE=".config"
+# Set up environment variables
+export ARCH=arm64
+export CROSS_COMPILE=aarch64-linux-gnu-
 
-# Function to setup environment
-setup_environment() {
-    echo "Setting up build environment..."
-    # Commands to set up environment
-}
+# Define configurations for WiFi support
+CONFIG_2GHZ="y"
+CONFIG_5GHZ="y"
+CONFIG_DUAL_BAND="y"
 
-# Function to configure kernel
-configure_kernel() {
-    echo "Configuring kernel..."
-    cd $KERNEL_SOURCE
-    make menuconfig
-    # Optionally include default config
-    cp $CONFIG_FILE .config
-}
+# Define configurations for cellular networks
+CONFIG_SAFARICOM="y"
+CONFIG_AIRTEL="y"
 
-# Function to build kernel
-build_kernel() {
-    echo "Building kernel..."
-    cd $KERNEL_SOURCE
-    make -j$(nproc)
-}
+# Export the configurations
+export CONFIG_2GHZ
+export CONFIG_5GHZ
+export CONFIG_DUAL_BAND
+export CONFIG_SAFARICOM
+export CONFIG_AIRTEL
 
-# Function to install Nexmon
-install_nexmon() {
-    echo "Installing Nexmon..."
-    cd $NEXMON_PATH
-    make
-}
+# Start build process
+echo "Starting Kernel Build..."
 
-# Function to enable monitor mode and packet injection
-enable_monitor_mode() {
-    # Commands to enable monitor mode
-    echo "Enabling monitor mode and packet injection..."
-}
+make clean
+make -j$(nproc)
 
-# Function to add HID Gadget support
-add_hid_gadget_support() {
-    # Commands to add HID Gadget support
-    echo "Adding HID Gadget support..."
-}
+# Check for successful build
+if [ "$?" -ne 0 ]; then
+    echo "Build failed!"
+    exit 1
+fi
 
-# Main function to execute the steps
-main() {
-    setup_environment
-    configure_kernel
-    build_kernel
-    install_nexmon
-    enable_monitor_mode
-    add_hid_gadget_support
-    echo "Build process completed successfully."
-}
+# Install the kernel
+sudo make modules_install
+sudo make install
 
-# Execute the main function
-main
+echo "Kernel built and installed successfully!"
