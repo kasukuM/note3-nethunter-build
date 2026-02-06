@@ -1,0 +1,26 @@
+# Kernel Configuration for HID, USB Gadget, WiFi Monitor Mode, Packet Injection, and Nexmon support
+
+CONFIG_USB_GADGET=y
+CONFIG_USB_GADGET_FS=y
+CONFIG_USB_GADGET_HID=y
+
+# Wi-Fi Configuration
+CONFIG_ATH9K=y
+CONFIG_ATH9K_HTC=y
+CONFIG_ATH9K_HWRNG=y
+CONFIG_ATH9K_DEBUGFS=y
+CONFIG_ATH9K_MONITOR=y
+CONFIG_ATH9K_PCI=y
+
+# Packet Injection
+CONFIG_CFG80211=y
+CONFIG_MAC80211=y
+CONFIG_MAC80211_HWSIM=y
+
+# Nexmon Support
+CONFIG_NEXMON=y
+
+# Other essential kernel options
+CONFIG_HID_GENERIC=y
+CONFIG_HID=y
+CONFIG_USB_DEVICE=y
